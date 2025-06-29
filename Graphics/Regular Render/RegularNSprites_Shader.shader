@@ -11,7 +11,7 @@
 // NOTE: some graphics API have problems with how NSprites updates Reactive / Static properties, if you encountered such situation,
 // then try to use only EachUpdate mode and access buffers like it described in first section
 
-Shader "Universal Render Pipeline/2D/SimpleSpriteShader"
+Shader "Universal Render Pipeline/2D/SimpleSpriteShaderCustom"
 {
     Properties
     {
@@ -72,6 +72,8 @@ Shader "Universal Render Pipeline/2D/SimpleSpriteShader"
             StructuredBuffer<float2> _pivotBuffer;
             StructuredBuffer<float2> _heightWidthBuffer;
             StructuredBuffer<int2> _flipBuffer;
+            StructuredBuffer<float4> _colorBuffer;
+            
 #endif
 
             // if you use this shader outside from NSprites-Foundation package please make sure you set this global variable
@@ -150,22 +152,26 @@ Shader "Universal Render Pipeline/2D/SimpleSpriteShader"
                 return varyings;
             }
 
+            
             float4 UnlitFragment(Varyings varyings, uint instanceID : SV_InstanceID) : SV_Target
             {
 #if defined(UNITY_INSTANCING_ENABLED) || defined(UNITY_PROCEDURAL_INSTANCING_ENABLED) || defined(UNITY_STEREO_INSTANCING_ENABLED)
                 int propertyIndex = _propertyPointers[instanceID];
                 float4 uvAtlas = _uvAtlasBuffer[propertyIndex];
+                float4 color = _colorBuffer[propertyIndex];
 #else
                 float4 uvAtlas = float4(1, 1, 0, 0);
+                float4 color = float4(1,0,0,1);
 #endif
 
+                
                 // finally frac UV and locate texture on atlas, now our UV is inside actual texture bounds (repeated)
                 varyings.uv = TilingAndOffset(frac(varyings.uv), uvAtlas.xy, uvAtlas.zw);
 
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, varyings.uv);
                 clip(texColor.w - 0.5);
-
-                return texColor;
+                
+                return texColor * color;
             }
             ENDHLSL
         }

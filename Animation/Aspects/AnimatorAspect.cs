@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 
 namespace NSprites
 {
@@ -49,5 +50,6 @@ namespace NSprites
 
         public void ResetAnimation(in double worldTime) =>
             SetToFrame(0, worldTime);
+        
     }
 }

@@ -24,11 +24,12 @@ namespace NSprites
                 
                 authoring.RegisterSpriteData.Bake(this, initialAnimData.SpriteSheet.texture);
                 authoring.AnimationAuthoringModule.Bake(this);
-                authoring.RenderSettings.Bake(this, authoring, frameSize, initialFrameUVAtlas);
+                authoring.RenderSettings.Bake(this, authoring, frameSize, initialFrameUVAtlas, authoring.Color);
                 authoring.Sorting.Bake(this);
             }
         }
-        
+
+        [SerializeField] public Color Color = Color.white;
         [SerializeField] public AnimationAuthoringModule AnimationAuthoringModule;
         [SerializeField] public RegisterSpriteAuthoringModule RegisterSpriteData;
         [SerializeField] public SpriteSettingsAuthoringModule RenderSettings;

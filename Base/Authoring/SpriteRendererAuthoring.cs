@@ -22,12 +22,13 @@ namespace NSprites
 
                 authoring.RegisterSpriteData.Bake(this, authoring.OverrideTextureFromSprite ? authoring.Sprite.texture : null);
                 var uvAtlas = (float4)NSpritesUtils.GetTextureST(authoring.Sprite);
-                authoring.RenderSettings.Bake(this, authoring, authoring.Sprite.GetNativeSize(uvAtlas.xy), uvAtlas);
+                authoring.RenderSettings.Bake(this, authoring, authoring.Sprite.GetNativeSize(uvAtlas.xy), uvAtlas, authoring.Color);
                 authoring.Sorting.Bake(this);
             }
         }
 
         [SerializeField] public Sprite Sprite;
+        [SerializeField] public Color Color = Color.white;
         [SerializeField] public RegisterSpriteAuthoringModule RegisterSpriteData;
         [SerializeField] public bool OverrideTextureFromSprite = true;
         

@@ -7,4 +7,5 @@ namespace NSprites
     {
         public int2 Value;
     }
+
 }

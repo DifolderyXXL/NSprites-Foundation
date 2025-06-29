@@ -36,7 +36,7 @@ namespace NSprites.Authoring
         /// <param name="authoring">authoring monobehaviour</param>
         /// <param name="nativeSize">The native size of a sprite being baked. Needs because sprite and it's params can come from arbitrary source, so need to be passed</param>
         /// <param name="uvAtlas">The same as <see cref="nativeSize"/> should be passed, because of external sprite</param>
-        public void Bake<TAuthoring>(Baker<TAuthoring> baker, TAuthoring authoring, in float2 nativeSize, in float4 uvAtlas)
+        public void Bake<TAuthoring>(Baker<TAuthoring> baker, TAuthoring authoring, in float2 nativeSize, in float4 uvAtlas, in Color color)
             where TAuthoring : Component
         {
             var authoringTransform = authoring.transform;
@@ -50,6 +50,7 @@ namespace NSprites.Authoring
                 GetTilingAndOffsetByDrawMode(),
                 Pivot,
                 Size * nativeSize * new float2(authoringScale.x, authoringScale.y),
+                color,
                 flipX: Flip.x,
                 flipY: Flip.y
             );

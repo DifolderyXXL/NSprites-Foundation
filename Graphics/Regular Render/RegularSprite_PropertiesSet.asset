@@ -27,3 +27,5 @@ MonoBehaviour:
     updateMode: 0
   - propertyName: _flipBuffer
     updateMode: 0
+  - propertyName: _colorBuffer
+    updateMode: 0

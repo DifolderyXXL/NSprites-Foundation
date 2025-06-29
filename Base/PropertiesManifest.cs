@@ -8,3 +8,4 @@ using Unity.Transforms;
 [assembly: InstancedPropertyComponent(typeof(Pivot), "_pivotBuffer")]
 [assembly: InstancedPropertyComponent(typeof(SortingData), "_sortingDataBuffer")]
 [assembly: InstancedPropertyComponent(typeof(Flip), "_flipBuffer")]
+[assembly: InstancedPropertyComponent(typeof(MaterialColor), "_colorBuffer")]

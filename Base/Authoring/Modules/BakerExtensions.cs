@@ -27,7 +27,7 @@ namespace NSprites.Authoring
         /// Bakes all passed data to make entity be able to rendered though shader from this package.
         /// If you use another shader and you need some another data, please implement your own baking method.
         /// </summary>
-        public static void BakeSpriteRender<TAuthoring>(this Baker<TAuthoring> baker, in Entity entity, TAuthoring authoring, in float4 uvAtlas, in float4 uvTilingAndOffset, in float2 pivot, in float2 scale, bool flipX = false, bool flipY = false)
+        public static void BakeSpriteRender<TAuthoring>(this Baker<TAuthoring> baker, in Entity entity, TAuthoring authoring, in float4 uvAtlas, in float4 uvTilingAndOffset, in float2 pivot, in float2 scale, in Color color, bool flipX = false, bool flipY = false)
             where TAuthoring : Component
         {
             if (baker == null)
@@ -41,6 +41,7 @@ namespace NSprites.Authoring
                 return;
             }
 
+            baker.AddComponent(entity, new MaterialColor() { Value = color });
             baker.AddComponent(entity, new UVAtlas { value = uvAtlas });
             baker.AddComponent(entity, new UVTilingAndOffset { value = uvTilingAndOffset });
             baker.AddComponent(entity, new Pivot { value = pivot });
