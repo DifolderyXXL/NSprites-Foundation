@@ -62,16 +62,17 @@ namespace NSprites
                     var renderData = EntityManager.GetComponentObject<SpriteRenderDataToRegister>(entity);
 
                     if (!renderArchetypeStorage.ContainsRender(renderData.data.ID))
+                    {
                         renderArchetypeStorage.RegisterRender
                         (
                             renderData.data.ID,
                             renderData.data.Material,
-                            new (Vector3.zero, Vector3.one * float.MaxValue),
+                            new(Vector3.zero, Vector3.one * float.MaxValue),
                             propertyDataSet: renderData.data.PropertiesSet.PropertyData,
                             initialCapacity: 128,
                             capacityStep: 128
                         );
-
+                    }
                     EntityManager.SetSharedComponentManaged(entity, new SpriteRenderID { id = renderData.data.ID });
                 }
             }

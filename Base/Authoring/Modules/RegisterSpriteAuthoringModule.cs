@@ -39,7 +39,8 @@ namespace NSprites.Authoring
             where TAuthoring : Component =>
             baker.BakeSpriteBase(GetRenderData(overrideTexture));
         
-        private SpriteRenderData GetRenderData([CanBeNull] Texture overrideTexture = null)
+        
+        public SpriteRenderData GetRenderData([CanBeNull] Texture overrideTexture = null)
         {
             if (overrideTexture == null)
                 return SpriteRenderData;

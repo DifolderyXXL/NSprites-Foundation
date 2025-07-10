@@ -1,6 +1,8 @@
-﻿using NSprites.Authoring;
+﻿using System;
+using NSprites.Authoring;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 namespace NSprites
@@ -20,26 +22,50 @@ namespace NSprites
 
                 DependsOn(authoring);
 
-                authoring.RegisterSpriteData.Bake(this, authoring.OverrideTextureFromSprite ? authoring.Sprite.texture : null);
+                authoring.RenderDataConfig.Value.Bake(this, authoring.OverrideTextureFromSprite ? authoring.Sprite.texture : null);
                 var uvAtlas = (float4)NSpritesUtils.GetTextureST(authoring.Sprite);
                 authoring.RenderSettings.Bake(this, authoring, authoring.Sprite.GetNativeSize(uvAtlas.xy), uvAtlas, authoring.Color);
                 authoring.Sorting.Bake(this);
             }
         }
 
+        public void Reset()
+        {
+            string[] regularRenderGuids = AssetDatabase.FindAssets("Regular Render");
+
+            foreach (var path in regularRenderGuids)
+            {
+                string regularRenderPath = AssetDatabase.GUIDToAssetPath(path);
+                
+                string[] configGuids = AssetDatabase.FindAssets("t:RenderDataConfig", new[] { regularRenderPath });
+                if (configGuids.Length > 0)
+                {
+                    string configPath = AssetDatabase.GUIDToAssetPath(configGuids[0]);
+                    RenderDataConfig = AssetDatabase.LoadAssetAtPath<RenderDataConfig>(configPath);
+                    return;
+                }
+            }
+        }
+
         [SerializeField] public Sprite Sprite;
         [SerializeField] public Color Color = Color.white;
-        [SerializeField] public RegisterSpriteAuthoringModule RegisterSpriteData;
+        [SerializeField] public RenderDataConfig RenderDataConfig;
         [SerializeField] public bool OverrideTextureFromSprite = true;
         
         [SerializeField] public SpriteSettingsAuthoringModule RenderSettings;
         [SerializeField] public SortingAuthoringModule Sorting;
-
+        
         private bool IsValid
         {
             get
             {
-                if (!RegisterSpriteData.IsValid(out var message))
+                if (RenderDataConfig is null)
+                {
+                    Debug.LogWarning(new NSpritesException("RenderDataConfig is null"), gameObject);
+                    return false;
+                }
+
+                if (!RenderDataConfig.Value.IsValid(out var message))
                 {
                     Debug.LogWarning(new NSpritesException(message), gameObject);
                     return false;
